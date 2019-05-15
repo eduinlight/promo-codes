@@ -7,6 +7,7 @@ router.get('/', (req, res, next) => {
   res.status(200).send("WELCOME TO PROMO CODES SAFEBODA API")
 })
 
-
+//
+router.get('/codes', controllers.codes.get)
 
 module.exports = router
