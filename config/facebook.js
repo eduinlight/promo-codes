@@ -1,0 +1,5 @@
+module.exports = {
+  API_VERSION: "v1.1",
+  APP_ID: "2097191813860262",
+  APP_SECRET: "21b15625c08f96b44f4f209112146d77",
+}
