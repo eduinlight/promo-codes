@@ -8,6 +8,10 @@ const bluebird = require('bluebird')
 const helmet = require('helmet')
 const cors = require('cors')
 
+//SWAGGER
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./routes/swagger.json');
+
 //MIOS
 const config = require('./config/config')
 const middlewares = require('./utils/middlewares')
@@ -46,9 +50,9 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 //TIPOS DE RESPUESTAS
 app.use(middlewares.responses)
 
-//CONFIGURACION DE LAS RUTAS
-let routes = require('./routes')
-app.use(routes)
+//CONFIGURACION DE LAS RUTAS Y DOCUMENTACIÓN
+require('./routes')(app)
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //CONFIGURACION PARA ERRORES
 // catch 404 and forward to error handler

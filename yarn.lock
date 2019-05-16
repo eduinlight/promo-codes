@@ -4364,6 +4364,18 @@ swagger-express-router@^1.0.0:
   dependencies:
     ramda "0.17.1"
 
+swagger-ui-dist@^3.18.1:
+  version "3.22.1"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.22.1.tgz#a7a4ebc5af5d28f7c9e1436be9a9258f5d23497e"
+  integrity sha512-KITbEqXkXrjGH12A0lpVZlH3uODFkwUh8d15My1YD4N0PSZDnIiC1iMFT6ryyuJxDYWZh0qezKpPqa5FRowngw==
+
+swagger-ui-express@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/swagger-ui-express/-/swagger-ui-express-4.0.3.tgz#e4e0642c43c6a204124c6b8e86649dd75361b76e"
+  integrity sha512-G0anPbcUHCnf84fum1BPZ2s1LG4DP1bYBFgF05YB0ibXx4VMAkGIMSq7Y9yT8hMtTaKkmK+ikJFOCCeA9FcRfA==
+  dependencies:
+    swagger-ui-dist "^3.18.1"
+
 swig@^1.4.2:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/swig/-/swig-1.4.2.tgz#4085ca0453369104b5d483e2841b39b7ae1aaba5"
