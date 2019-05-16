@@ -33,3 +33,27 @@ router.get('/', (req, res, next) => {
 router.get('/codes', controllers.codes.get)
 
 module.exports = router
+
+let routes = {
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "description": "",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:8000",
+  "basePath": "/api/swagger/v1",
+  "paths": {
+    "/test1": {
+      "get": {
+        "x-swagger-router-controller": "middleware-name1",
+        "operationId": "swagTest",
+        "tags": ["/test"],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    }
+  }
+}
