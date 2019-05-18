@@ -10,7 +10,7 @@ const cors = require('cors')
 
 //SWAGGER
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./routes/swagger.json');
+const swaggerDocument = require('./routes/swagger.js');
 
 //MIOS
 const config = require('./config/config')
