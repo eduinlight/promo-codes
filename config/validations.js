@@ -38,7 +38,7 @@ module.exports = {
       'required',
       'numeric',
     ],
-    destination_longitude: [
+    destination_latitude: [
       'required',
       'numeric',
     ],

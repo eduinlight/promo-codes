@@ -55,7 +55,7 @@ module.exports = {
     const {user_id, code_id} = req.body
 
     //validate user
-    let user = await User.findById(user_id)
+    let user = await User.findByPk(user_id)
     if(!user){
       return res.not_found("the user do not exist")
     }
@@ -117,7 +117,7 @@ module.exports = {
     } = req.body
 
     //validate user
-    let user = await User.findById(user_id)
+    let user = await User.findByPk(user_id)
     if(!user){
       return res.not_found("the user do not exist")
     }
@@ -224,7 +224,7 @@ module.exports = {
     const {radius} = req.body
 
     //get the code
-    let code = await Code.findById(code_id)
+    let code = await Code.findByPk(code_id)
     
     //check if event exist
     if(!code){
@@ -238,14 +238,14 @@ module.exports = {
       id: code.id
     }})
 
-    return res.success(await Code.findById(code.id))
+    return res.success(await Code.findByPk(code.id))
   },
   //deactivate a code
   putDeactivate: async (req, res) => {
     const {code_id} = req.params
 
     //get the code
-    let code = await Code.findById(code_id)
+    let code = await Code.findByPk(code_id)
     
     //check if event exist
     if(!code){
@@ -259,7 +259,7 @@ module.exports = {
       id: code.id
     }})
 
-    return res.success(await Code.findById(code.id))
+    return res.success(await Code.findByPk(code.id))
   },
 
 }
