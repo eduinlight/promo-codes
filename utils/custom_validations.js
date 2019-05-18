@@ -101,7 +101,7 @@ let defaults = {
     boolean: {
       cant_params: 0,
       message: 'only a boolean value',
-      fn: () => (v) => (v != 'true' && v!='false') || (v!='1' && v!='0')
+      fn: () => (v) => v == 'true' || v=='false' && v=='1' || v=='0'
     },
     min_length: {
       cant_params: 1,

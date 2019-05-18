@@ -5,6 +5,10 @@ const Code = require('./code.model');
 const User = require('./user.model');
 
 const UserCode = db.define('user_code', {
+  id: { 
+    type: Sequelize.UUID, 
+    primaryKey: true 
+  },
   rides_count: { 
     type: Sequelize.INTEGER, 
     defaultValue: 0,
@@ -19,7 +23,7 @@ UserCode.beforeCreate((obj, _ ) => {
   return obj.id = uuid();
 })
 
-Code.belongsToMany(User, {through: UserCode})
-User.belongsToMany(Code, {through: UserCode})
+UserCode.belongsTo(User)
+UserCode.belongsTo(Code)
 
 module.exports = UserCode

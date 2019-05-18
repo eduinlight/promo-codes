@@ -182,7 +182,7 @@ module.exports = {
   responses: (req, res, next) => { 
     let responses = require('./responses')
     Object.keys(responses).forEach(k => {
-      res[k] = (p) => {res.json(responses[k](p))}
+      res[k] = (p) => {res.status(responses[k](p).status).json(responses[k](p))}
     })
     next(); 
   }

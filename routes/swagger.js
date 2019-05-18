@@ -23,27 +23,185 @@ module.exports = {
       get: {
         tags: ["codes"],
         "x-swagger-router-controller": "Codes",
-        operationId: "get",
+        operationId: "getCodes",
         description: "get all codes",
         parameters: [
-            
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Tags to filter by",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
         ],
-        responses: {
-
-        }
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        },
       }
     },
-    "/tests": {
-      get: {
-        tags: [""],
-        "x-swagger-router-controller": "Tests",
-        operationId: "get",
-        description: "this is me testing things",
+    "/codes/generate": {
+      post: {
+        tags: ["codes"],
+        "x-swagger-router-controller": "Codes",
+        operationId: "postGenerate",
+        description: "generate a promo code for an event",
         parameters: [
-            
+          {
+            name: "event_id",
+            in: "body",
+            required: true,
+            type: "string",
+          }
         ],
         responses: {
-
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    },
+    "/codes/:code_id": {
+      put: {
+        tags: ["codes"],
+        "x-swagger-router-controller": "Codes",
+        operationId: "putRadius",
+        description: "update a code radius",
+        parameters: [
+          {
+            name: "radius",
+            in: "body",
+            required: true,
+            type: "double",
+          }
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    },
+    "/codes/deactivate/:code_id": {
+      put: {
+        tags: ["codes"],
+        "x-swagger-router-controller": "Codes",
+        operationId: "putDeactivate",
+        description: "deactivate a code",
+        parameters: [
+          
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    },
+    "/codes/pickup": {
+      post: {
+        tags: ["codes"],
+        "x-swagger-router-controller": "Codes",
+        operationId: "postPickup",
+        description: "handle when user pickup a code to start using it.",
+        parameters: [
+          
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    },
+    "/codes/ride": {
+      post: {
+        tags: ["codes"],
+        "x-swagger-router-controller": "Codes",
+        operationId: "postRide",
+        description: "handle an user ride from origin to destination using a code.",
+        parameters: [
+          
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    }
+  },
+  definitions: {
+    Order: {
+      type: "object",
+      properties: {
+        id: {
+          type: "integer",
+          format: "int64",
         }
       }
     }

@@ -25,6 +25,10 @@ const Code = db.define('code', {
     type: Sequelize.BOOLEAN,
     defaultValue: true,
     allowNull: false,
+  },
+  expire_date: {
+    type: Sequelize.DATE,
+    allowNull: false,
   }
 }, {
   underscoredAll: true,

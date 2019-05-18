@@ -2,26 +2,26 @@ module.exports = {
   token_invalid: () => {
     return {
       status: 400,
-      message: "el token es inválido",
+      message: "invalid token",
     }
   },
   data_errors: (errors) => {
     return{
       status: 400,
-      message: "existen errores en los datos",
+      message: "Data errors",
       errors: errors
     }
   },
-  not_found: () => {
+  not_found: (message="the url does not exist") => {
     return {
       status: 404,
-      message: "la url no existe",
+      message: message,
     }
   },
   not_allowed: () => {
     return {
       status: 501,
-      message: "usted no tiene acceso al recurso",
+      message: "you do not have access to the resource",
     }
   },
   success : (data = null) => {
