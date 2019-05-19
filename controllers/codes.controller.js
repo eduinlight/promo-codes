@@ -1,5 +1,7 @@
 const gmaps = require('../gmaps')
 const geo = require('geolib');
+const axios = require('axios');
+const config = require('../config/config');
 const val = require('../utils/custom_validations')
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -8,6 +10,8 @@ const Code = require('../models/code.model');
 const Event = require('../models/event.model');
 const UserCode = require('../models/user-code.model');
 const User = require('../models/user.model');
+
+const SERVER_URL = `${config.server.protocol}://${config.server.domain}:${config.server.port}`
 
 module.exports = {
   //generate a new promo code for an event: body: event_id: Sequelize.UUID
@@ -21,9 +25,7 @@ module.exports = {
     const {event_id} = req.body
 
     //get the event
-    let event = await Event.findOne({where: {
-      id: event_id
-    }})
+    let event = await Event.findById(event_id)
     
     //check if event exist
     if(!event){
@@ -63,7 +65,7 @@ module.exports = {
     let code = await Code.findOne({
       where: {
         id: code_id,
-        active: true,
+        active: 1,
       }
     })
     if(!code){
@@ -92,15 +94,40 @@ module.exports = {
 
     return res.success()
   },
-  //used for falidate if a x user with a y code can ride to or from an event venue
+  //used for bring to the user a route to his destination using a code
+  //and increment his rides with this code
+  postRide: async (req, res) => {
+    axios.post(`${SERVER_URL}/codes/validate/ride`, req.body)
+    .then( async (response) => {
+      const {user_id, code_id} = req.body
+
+      let code = await Code.findById(code_id)
+
+      let user_code = await UserCode.findOne({where: {
+        user_id: user_id,
+        code_id: code_id,
+        rides_count: {[Op.lt]: code.max_rides}
+      }})
+      //everything it's ok so increment rides_count
+      await UserCode.update({
+        rides_count: user_code.rides_count + 1
+      },{where: {
+        id: user_code.id,
+      }})
+      res.success(response.data);
+    })
+    .catch( error => {
+      res.status(error.response.status).json(error.response.data)
+    })
+  },
+  //used for validate if a X user with a Y code can ride to or from an event venue
   //1- check if code is active or if code has not expire
       //expire => with expiration_date or with max_rides
-  //2- check that the user has picked the code
+  //2- check if the user has been pickup the code before
   //3- calculate distance from origin to destination
   //4- check if promo code radius >= distance
   //5- at this point the user can travel so return the polyline 
-  //and increment his rides with this code
-  postRide: async (req, res) => {
+  postValidateRide: async (req, res) => {
     //validating input
     let v = val.validate('postRide', req.body)
     if(!v.valid){
@@ -125,7 +152,7 @@ module.exports = {
     let code = await Code.findOne({
       where: {
         id: code_id,
-        active: true,
+        active: 1,
       }
     })
     if(!code){
@@ -135,43 +162,61 @@ module.exports = {
       return res.not_found("the code has expire")
     }
 
-    //if the user has rides_count <= max_rides
+    //if the user has rides_count < max_rides
     let user_code = await UserCode.findOne({where: {
       user_id: user.id,
       code_id: code.id,
       rides_count: {[Op.lt]: code.max_rides}
     }})
     if(!user_code){
-      res.data_errors({message: `the user cant'n ride with this code.`})
+      res.data_errors({message: `the user cant not ride with this code.`})
     }
 
     //calculating distance
-    let distance = geolib.getDistance(
+    let distance = geo.getDistance(
       {latitude: origin_latitude, longitude: origin_longitude},
       {latitude: destination_latitude, longitude: destination_longitude},
     )
 
-    //checking if the radius >= distance
-    if(code.radius >= distance){
+    //checking if the distance > radius
+    if(distance > code.radius){
       return res.data_errors({
-        message: `not allowed distances greater than ${code.radius} m`
+        message: `not allowed distances greater than ${code.radius} meter`
       })
     }
 
-    //everything it's ok so increment rides_count
-    await UserCode.update({
-      rides_count: user_code.rides_count + 1
-    },{where: {
-      user_id: user.id,
-      code_id: code.id,
-      rides_count: {[Op.lt]: code.max_rides},
-    }})
-
     //return polyline
     //TODO
-    // gmaps.direction({
-    //     query
-    // })
+    gmaps.directions({
+      origin: {
+        latitude: origin_latitude, 
+        longitude: origin_longitude
+      },
+      destination: {
+        latitude: destination_latitude, 
+        longitude: destination_longitude
+      },
+    }, (err, response) => {
+      if(err){
+        return res.success({
+          valid: true,
+          message: "the user can do it but we can not provide the polynine."
+        })
+      }
+      return res.success({
+        valid: true,
+        polyline: response.json.routes.length==0?[]:
+          response.json.routes[0].legs.length==0?[]:
+          response.json.routes[0].legs[0].steps.length==0?[]:
+          response.json.routes[0].legs[0].steps.map(step => {
+          //   return step
+            return {
+              latitude: step.start_location.lat,
+              longitude: step.start_location.lng,
+            }
+          })
+      })
+    })
   },
   //get all codes
   getCodes: async (req, res) => {
@@ -197,7 +242,7 @@ module.exports = {
       }
 
       where = {
-        active: active,
+        active: active?1:0,
         ...expireCond,
       }
     }
@@ -254,7 +299,7 @@ module.exports = {
 
     //update the code
     await Code.update({
-      active: false
+      active: 0
     }, {where: {
       id: code.id
     }})

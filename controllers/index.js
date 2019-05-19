@@ -1,4 +1,6 @@
 module.exports = {
   codes: require('./codes.controller'),
-  tests: require('./test.controller'),
+  config: require('./config.controlles'),
+  events: require('./events.controller'),
+  users: require('./users.controller'),
 }

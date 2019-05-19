@@ -86,7 +86,7 @@ let defaults = {
     float: {
       cant_params: 0,
       message: 'only a float number',
-      fn: sv.isFloat
+      fn: () => (v) => sv.isFloat(v, {locale: 'en-US'})
     },
     divisible_by: {
       cant_params: 1,
@@ -101,7 +101,7 @@ let defaults = {
     boolean: {
       cant_params: 0,
       message: 'only a boolean value',
-      fn: () => (v) => v == 'true' || v=='false' && v=='1' || v=='0'
+      fn: () => (v) => v == 'true' || v=='false' || v=='1' || v=='0'
     },
     min_length: {
       cant_params: 1,
@@ -215,12 +215,21 @@ module.exports = {
           params_fn = rule.params
         }
 
-        if (((v!='required' && data[field] !== undefined && data[field] !== null && data[field] !== '') || v=='required')
-          && !rule.fn(...params_fn)(data[field])) {
+        if (
+          (
+            (
+              v!='required' 
+              && data[field] !== undefined 
+            )
+            || v=='required'
+          )
+          && !rule.fn(...params_fn)(data[field])
+          ) {
           res.valid = false
           //reemplazar parámetros en el mensaje
           params_fn.forEach((v, i) => rule.message = rule.message.replace(new RegExp('\%p' + (i + 1), 'g'), v))
           res.errors[field] = rule.message
+
         }
       });
     })

@@ -2,7 +2,12 @@ var funciones = require('../utils/funciones')
 
 
 module.exports = {
-  frontend_url: 'http://localhost:4200',
+  server: {
+    protocol: "http",
+    port: 9000,
+    domain: "localhost",
+  },
+
   database: {
     database: 'safeboda',
     username: 'root',

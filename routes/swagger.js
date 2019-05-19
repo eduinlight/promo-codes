@@ -17,6 +17,18 @@ module.exports = {
       name: "codes",
       description: "Everything about codes",
     },
+    {
+      name: "config",
+      description: "Everything about configuration",
+    },
+    {
+      name: "users",
+      description: "Everything about users",
+    },
+    {
+      name: "events",
+      description: "Everything about events",
+    },
   ],
   paths: {
     "/codes": {
@@ -27,30 +39,17 @@ module.exports = {
         description: "get all codes",
         parameters: [
           {
-            "name": "tags",
-            "in": "query",
-            "description": "Tags to filter by",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
+            "name": "active",
+            "in": "path",
+            "description": "Filter for active parameter",
+            "required": false,
+            "type": "boolean",
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Pet"
-              }
-            }
+            
           },
-          "400": {
-            "description": "Invalid tag value"
-          }
         },
       }
     },
@@ -193,16 +192,182 @@ module.exports = {
           }
         },
       }
+    },
+    "/codes/validate/ride": {
+      post: {
+        tags: ["codes"],
+        "x-swagger-router-controller": "Codes",
+        operationId: "postValidateRide",
+        description: "validate if an user can do a ride with a code.",
+        parameters: [
+          
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    },
+    "/users": {
+      get: {
+        tags: ["users"],
+        "x-swagger-router-controller": "Users",
+        operationId: "getUsers",
+        description: "get all users.",
+        parameters: [
+          
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    },
+    "/events": {
+      get: {
+        tags: ["events"],
+        "x-swagger-router-controller": "Events",
+        operationId: "getEvents",
+        description: "get all events.",
+        parameters: [
+          
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
+    },
+    "/config": {
+      get: {
+        tags: ["config"],
+        "x-swagger-router-controller": "Config",
+        operationId: "getConfig",
+        description: "get default configuration data.",
+        parameters: [
+          
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      },
+      put: {
+        tags: ["config"],
+        "x-swagger-router-controller": "Config",
+        operationId: "putConfig",
+        description: "edit default configuration data.",
+        parameters: [
+
+        ],
+        responses: {
+          "200": {
+            description: "successful operation",
+            schema: {
+              type: "array",
+              items: {
+                "$ref": "#/definitions/Pet"
+              }
+            }
+          },
+          "404": {
+            "description": "successful operation",
+            message: "the event do not exist",
+          }
+        },
+      }
     }
   },
   definitions: {
-    Order: {
+    Code: {
       type: "object",
       properties: {
-        id: {
-          type: "integer",
-          format: "int64",
+        id: {type: "string"},
+        max_rides: {type: "integer"},
+        radius: {type: "double"},
+        duration: {type: "integer"},
+        active: {type: "boolean"},
+        expire_date: {type: "date-time"},
+        created_at: {type: "date-time"},
+        updated_at: {type: "date-time"},
+        event_id: {type: "date-time"},
+        event: {
+          required: false,
+          "$ref": "#/definitions/Event"
         }
+      }
+    },
+    Event: {
+      type: "object",
+      properties: {
+        id: {type: "string"},
+      }
+    },
+    User: {
+      type: "object",
+      properties: {
+        id: {type: "string"},
+      }
+    },
+    ResponseDataErrors: {
+      type: "object",
+      properties: {
+        status: 400,
+        message: {type: "string"},
+        errors: {
+          type: "object",
+        }
+      }
+    },
+    ResponseNotFound: {
+      type: "object",
+      properties: {
+        status: 404,
+        message: {type: "string"},
       }
     }
   }

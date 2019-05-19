@@ -6,7 +6,9 @@ const swaggerDocument = require('./swagger.js')
 const useBasePath = true;
 const middlewareObj = {
     'Codes': controllers.codes,
-    'Tests': controllers.tests,
+    'Config': controllers.config,
+    'Events': controllers.events,
+    'Users': controllers.users,
 };
 
 module.exports = (app) => {

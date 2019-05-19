@@ -12,7 +12,7 @@ module.exports = {
   putRadius: {
     radius: [
       'required',
-      'numeric',
+      'float',
     ]
   },
   postPickup: {
@@ -32,19 +32,30 @@ module.exports = {
     ],
     origin_latitude: [
       'required',
-      'numeric',
+      'float',
     ],
     origin_longitude: [
       'required',
-      'numeric',
+      'float',
     ],
     destination_latitude: [
       'required',
-      'numeric',
+      'float',
     ],
     destination_longitude: [
       'required',
-      'numeric',
+      'float',
     ]
+  },
+  putConfig: {
+    promo_code_max_rides: [
+      'int',
+    ],
+    promo_code_radius: [
+      'float',
+    ],
+    promo_code_duration: [
+      'int',
+    ],
   }
 }

@@ -7,12 +7,13 @@
 var app = require('../app');
 var debug = require('debug')('safeboda-codes-api:server');
 var http = require('http');
+var config = require('../config/config');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort('9000');
+var port = normalizePort(config.server.port);
 app.set('port', port);
 
 /**
