@@ -4,7 +4,7 @@ const Event = require('../models/event.model');
 
 module.exports = {
   getEvents: async (req, res) => {
-    const data = await Event.findAll()
+    const data = await Event.findAll({attributes: ['id']})
     res.success(data)
   }
 }

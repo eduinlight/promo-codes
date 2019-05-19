@@ -4,7 +4,7 @@ const User = require('../models/user.model');
 
 module.exports = {
   getUsers: async (req, res) => {
-    const data = await User.findAll()
+    const data = await User.findAll({attributes: ['id']})
     res.success(data)
   }
 }

@@ -114,7 +114,7 @@ module.exports = {
       },{where: {
         id: user_code.id,
       }})
-      res.success(response.data);
+      res.status(response.status).json(response.data);
     })
     .catch( error => {
       res.status(error.response.status).json(error.response.data)

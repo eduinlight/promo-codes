@@ -4,6 +4,10 @@ const uuid = require('uuid/v4')
 const config = require('../config/config');
 
 const Config = db.define('config', {
+  id: { 
+    type: Sequelize.UUID, 
+    primaryKey: true 
+  },
   promo_code_max_rides: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -22,6 +26,11 @@ const Config = db.define('config', {
 }, {
   underscoredAll: true,
   underscored: true,
+})
+
+Config.beforeCreate(async (obj, _ ) => {
+  obj.id = uuid();
+  return obj
 })
 
 module.exports = Config
