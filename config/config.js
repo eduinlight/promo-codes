@@ -9,7 +9,7 @@ module.exports = {
   },
 
   database: {
-    database: 'safeboda',
+    database: 'promo_codes',
     username: 'root',
     password: '',
     dialect: 'mysql',

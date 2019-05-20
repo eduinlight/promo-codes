@@ -1,4 +1,4 @@
-# Safeboda
+# Promo Codes
 
 ## Technologies for this API creation: 
 <br/><b>Language for backend</b>: javascript
@@ -26,7 +26,7 @@
 Edit <i>/config/config.js</i> file and change the database object attributes.
 ```javascript
   database: {
-    database: 'safeboda',
+    database: 'promo_codes',
     username: 'root',
     password: '',
     dialect: 'mysql',
