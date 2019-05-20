@@ -1,7 +1,8 @@
 # Safeboda
 
 Technologies for the API creation: 
-<br/><b>Language for backend</b>: nodejs()
+<br/><b>Language for backend</b>: javascript
+<br/><b>For run javascript on the server</b>: nodejs
 <br/><b>Backend framework</b>: express()
 <br/><b>Library for API documentation</b>: swagger()
 <br/><b>Test framework</b>: mocha()
