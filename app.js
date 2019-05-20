@@ -25,7 +25,9 @@ app.enable('strict routing')
 app.use(helmet())
 
 //CONFIGURACION DEL LOGGER
-app.use(logger('dev'))
+if(process.env.NODE_ENV != 'test'){
+  app.use(logger('dev'))
+}
 
 //COMO SE ESPERAN LOS DATOS
 app.use(bodyParser.json())
